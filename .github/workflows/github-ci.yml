@@ -19,11 +19,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Instalar dependências
-        run: npm install -g newman newman-reporter-htmlextra
-
       - name: Executar testes do Postman
-        run: newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
+        run: bash run_tests.sh
 
       - name: Arquivar resultados
         uses: actions/upload-artifact@v2
