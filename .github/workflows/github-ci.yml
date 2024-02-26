@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Use Node.js 20
-      - name: Setup Node.js 20
+      - name: Usar Node.js 20
         uses: actions/setup-node@v2
         with:
           node-version: '20'
@@ -33,7 +33,7 @@ jobs:
         run: newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
    
       # Use Node.js 20
-      - name: Archive production artifacts
+      - name: Step 4 Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
             name: report
