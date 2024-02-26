@@ -25,10 +25,9 @@ jobs:
       # Verifica o seu repositório em $GITHUB_WORKSPACE, para que seu job possa acessá-lo
       - name: Checkout do código
         uses: actions/checkout@v3
-        runs:
-          using: node
-          version: '20'
-
+        with:
+          ref: main
+      
       # Executa um conjunto de comandos usando o shell do runner
       - name: Verificar versão do Newman e Node
         run: |
@@ -38,16 +37,10 @@ jobs:
       # Executa um único comando usando o shell do runner      
       - name: Instalar Newman-Reporter-Htmlextra
         run: sudo npm install -g newman-reporter-htmlextra
-        runs:
-          using: node
-          version: '20'
-          
+      
       # Executa um conjunto de comandos usando o shell do runner
       - name: Executar coleção
         run: newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
-        runs:
-          using: node
-          version: '20'
    
       # Executa um conjunto de comandos usando o shell do runner
       - name: Arquivar artefatos de produção
@@ -55,6 +48,3 @@ jobs:
         with:
             name: report
             path: ./results/Report.html
-        runs:
-          using: node
-          version: '20'
