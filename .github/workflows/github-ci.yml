@@ -21,6 +21,6 @@ jobs:
     - name: Instalar dependências
       run: npm install newman
 
-    - name: Executar testes com Postma
+    - name: Executar testes com Postman
       run: |
-        newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
+        npx newman run caminho/para/sua/colecao.json
