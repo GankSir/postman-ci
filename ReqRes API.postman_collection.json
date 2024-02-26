@@ -1,0 +1,797 @@
+{
+	"info": {
+		"_postman_id": "9e27c916-3cc9-4888-9b99-8beab7d2d42f",
+		"name": "ReqRes API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "create-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+									"});",
+									"//Este teste verifica se o retornod dos STATUS é = 201 ou 202 .",
+									"",
+									"pm.test(\"Response time is between 100ms and 700ms\", function () {",
+									"    var responseTime = pm.response.responseTime;",
+									"    pm.expect(responseTime).to.be.within(100, 700);",
+									"});",
+									"//Este teste verifica se o tempo de resposta está dentro do intervalo de 100ms a 700ms. Se o tempo de resposta estiver fora desse intervalo, o teste falhará.",
+									"",
+									"pm.test(\"Validating presence of fields in response body\", function () {",
+									"    var responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"name\");",
+									"    pm.expect(responseBody).to.have.property(\"job\");",
+									"    pm.expect(responseBody).to.have.property(\"id\");",
+									"    pm.expect(responseBody).to.have.property(\"createdAt\");",
+									"});",
+									"//Este teste verifica se os campos \"name\", \"job\", \"id\" e \"createdAt\" estão presentes no corpo da resposta. Se algum deles estiver faltando, o teste falhará.",
+									"",
+									"pm.test(\"Validating response body\", function () {",
+									"    var expectedBody = {",
+									"        \"name\": \"Bruno Teles\",",
+									"        \"job\": \"QA\"",
+									"    };",
+									"",
+									"    var responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.include(expectedBody);",
+									"});",
+									"//Este teste verifica se o corpo da resposta contém apenas os campos \"name\" e \"job\" com os valores especificados. Certifique-se de ajustar os valores esperados conforme necessário para corresponder à resposta real que você espera receber.",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Bruno Teles\",\n    \"job\": \"QA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/user",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"//Este teste verifica se o retornod dos STATUS  = 200  .",
+									"",
+									"",
+									"pm.test(\"JSON retorn array in the body\", function (){",
+									"    var responseBody=pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"page\");",
+									"    pm.expect(responseBody).to.have.property(\"per_page\");",
+									"    pm.expect(responseBody).to.have.property(\"total\");",
+									"    pm.expect(responseBody).to.have.property(\"total_pages\");",
+									"    pm.expect(responseBody).to.have.property(\"data\");",
+									"})",
+									"//Este teste verifica se os campos \"page\", \"per_page\", \"total\", \"total_pages\" e \"data\" estão presentes no corpo da resposta. Se algum deles estiver faltando, o teste falhará.",
+									"",
+									"pm.test(\"Verifying presence of fields in response body\", function () {",
+									"    var responseBody = pm.response.json();",
+									"    var data = responseBody.data;",
+									"",
+									"    data.forEach(function(item) {",
+									"        pm.expect(item.id).to.exist;",
+									"        pm.expect(item.email).to.exist;",
+									"        pm.expect(item.first_name).to.exist;",
+									"        pm.expect(item.last_name).to.exist;",
+									"        pm.expect(item.avatar).to.exist;",
+									"    });",
+									"",
+									"    pm.expect(responseBody.page).to.exist;",
+									"    pm.expect(responseBody.per_page).to.exist;",
+									"    pm.expect(responseBody.total).to.exist;",
+									"    pm.expect(responseBody.total_pages).to.exist;",
+									"    pm.expect(responseBody.support).to.exist;",
+									"    pm.expect(responseBody.support.url).to.exist;",
+									"    pm.expect(responseBody.support.text).to.exist;",
+									"});",
+									"//Este teste verifica se todos os campos estão presentes e preenchidos dentro do objeto fornecido."
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/users?page=2",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/users/2",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single-user-not-found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Verifying if response is an empty object\", function () {",
+									"    var responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.eql({});",
+									"});",
+									"//Este teste verifica se o corpo da resposta é um objeto vazio. Ele irá passar se o corpo da resposta for exatamente um objeto vazio {} e falhará se houver qualquer outro conteúdo no corpo da resposta."
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/users/23",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-resource",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"First data item\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var firstDataItem = jsonData.data[0]; // Acessa o primeiro item do array \"data\"",
+									"    pm.expect(firstDataItem.id).to.eql(1); // Verifica se o id do primeiro item é igual a 1",
+									"});",
+									"",
+									"pm.test(\"Last data item\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var lastDataItem = jsonData.data[5]; // Acessa o último item do array \"data\"",
+									"    pm.expect(lastDataItem.id).to.eql(6); // Verifica se o id do último item é igual a 6",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/unknown",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"unknown"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single-resource",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verifying presence of fields in response body\", function () {",
+									"    var responseBody = pm.response.json();",
+									"    var data = responseBody.data;",
+									"",
+									"    pm.expect(data.id).to.exist;",
+									"    pm.expect(data.name).to.exist;",
+									"    pm.expect(data.year).to.exist;",
+									"    pm.expect(data.color).to.exist;",
+									"    pm.expect(data.pantone_value).to.exist;",
+									"",
+									"    pm.expect(responseBody.support).to.exist;",
+									"    pm.expect(responseBody.support.url).to.exist;",
+									"    pm.expect(responseBody.support.text).to.exist;",
+									"});",
+									"//Este teste verifica se todos os campos estão presentes e preenchidos dentro do objeto fornecido. Ele verifica cada campo individualmente para garantir que estejam presentes e não sejam nulos ou indefinidos."
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/unknown/2",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"unknown",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "single-not-found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function (){",
+									"    pm.response.to.have.status(404) ",
+									"})",
+									"",
+									"pm.test(\"Verifying if response is an empty object\", function () {",
+									"    var responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.eql({});",
+									"});",
+									"//Este teste verifica se o corpo da resposta é um objeto vazio. Ele irá passar se o corpo da resposta for exatamente um objeto vazio {} e falhará se houver qualquer outro conteúdo no corpo da resposta."
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/unknown/23",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"unknown",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Validating presence of fields in response body\", function (){",
+									"    const responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody).to.have.property(\"name\");",
+									"    pm.expect(responseBody).to.have.property(\"job\");",
+									"    pm.expect(responseBody).to.have.property(\"updatedAt\");",
+									"});",
+									"//Este teste verifica se os campos \"name\", \"job\", \"id\" e \"createdAt\" estão presentes no corpo da resposta. Se algum deles estiver faltando, o teste falhará.",
+									"",
+									"pm.test(\"Filds are not null or empty\", function () {",
+									"    // Verifica se o campo 'name' não é nulo e não é uma string vazia",
+									"    pm.expect(pm.response.json().name).to.not.be.null;",
+									"    pm.expect(pm.response.json().name).to.not.equal(\"\");",
+									"    ",
+									"    // Verifica se o campo 'job' não é nulo e não é uma string vazia",
+									"    pm.expect(pm.response.json().job).to.not.be.null;",
+									"    pm.expect(pm.response.json().job).to.not.equal(\"\");",
+									"",
+									"    // Verifica se o campo 'updatedAt' não é nulo e não é uma string vazia",
+									"    pm.expect(pm.response.json().updatedAt).to.not.be.null;",
+									"    pm.expect(pm.response.json().updatedAt).to.not.equal(\"\");",
+									"});",
+									"//Este teste irá verificar se cada campo do objeto retornado não é nulo e não é uma string vazia. Se algum dos campos for nulo ou uma string vazia, o teste falhará.",
+									"",
+									"// Extrai os dados enviados no corpo da solicitação e converte de string JSON para objeto JavaScript",
+									"const requestData = JSON.parse(pm.request.body.raw);",
+									"",
+									"// Extrai os dados recebidos no corpo da resposta",
+									"const responseData = pm.response.json();",
+									"",
+									"// Testa se o campo 'name' na resposta é igual ao campo 'name' na solicitação",
+									"pm.test(\"'name' field in the response is the same as the 'name' field in the request\", function () {",
+									"    pm.expect(responseData.name).to.equal(requestData.name);",
+									"});",
+									"",
+									"// Testa se o campo 'job' na resposta é igual ao campo 'job' na solicitação",
+									"pm.test(\"'job' field in the response is the same as the 'job' filed in the request\", function () {",
+									"    pm.expect(responseData.job).to.equal(requestData.job);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Bruno Sales\",\n    \"job\": \"QA Engineer\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/users/299",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"299"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-entity-users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 \", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"\r",
+									"// Extrai o corpo da solicitação e armazena em uma variável global\r",
+									"const requestBody = JSON.parse(pm.request.body);\r",
+									"\r",
+									"pm.test(\"Validates that the response is an array and each object has 'name' and 'job' equal to the one sent\", function () {\r",
+									"    // Obtém o body da resposta\r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    // Verifica se o body é um array\r",
+									"    pm.expect(responseBody).to.be.an('array');\r",
+									"\r",
+									"    // Itera sobre cada objeto no array\r",
+									"    responseBody.forEach(function(obj) {\r",
+									"        // Verifica se o objeto possui as propriedades 'name' e 'job'\r",
+									"        pm.expect(obj).to.have.property(\"name\");\r",
+									"        pm.expect(obj).to.have.property(\"job\");\r",
+									"\r",
+									"        // Verifica se o objeto da resposta é igual ao objeto enviado no corpo da requisição\r",
+									"        pm.expect(obj).to.eql(requestBody.find(function(item) {\r",
+									"            return item.name === obj.name && item.job === obj.job;\r",
+									"        }));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"name\": \"Bruno Teles Sales\",\n        \"job\": \"qa engineer\"\n    },\n    {\n        \"name\": \"Edson Luis Resende\",\n        \"job\": \"tech lead \"\n    },\n    {\n        \"name\": \"Thanatos HK\",\n        \"job\": \"full stack developer\"\n    },\n    {\n        \"name\": \"Gabrieal Deamon\",\n        \"job\": \"front end developer\"\n    },\n    {\n        \"name\": \"Duda Baldurs Gate\",\n        \"job\": \"product owner\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/users/2990",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2990"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function(){\r",
+									"    pm.response.to.have.status(204);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/users/2990",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2990"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "register-sucessful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"//Este teste verifica se o retornod dos STATUS  = 200  .",
+									"",
+									"pm.test(\"Verifying presence of fields in response body\", function () {",
+									"    var responseBody = pm.response.json();",
+									"",
+									"    pm.expect(responseBody.id).to.exist;",
+									"    pm.expect(responseBody.token).to.exist;",
+									"",
+									"",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"teste1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/register",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register-unsucessful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function (){",
+									"    pm.response.to.have.status(400)",
+									"})",
+									"",
+									"pm.test(\"check your message error 'Missing email or username'\", function(){",
+									"    pm.response.to.be.json;",
+									"",
+									"    // Verifica se a chave \"error\" existe na resposta",
+									"    pm.expect(pm.response.json()).to.have.property('error');",
+									"",
+									"   // Verifica se o valor da chave \"error\" é 'Missing email or username''",
+									"    pm.expect(pm.response.json().error).to.be.equal('Missing email or username')",
+									"",
+									"})",
+									"",
+									"pm.test(\"check that the return is not null or ewpty\", function () {",
+									"    // Verifica se a resposta é um objeto JSON",
+									"    pm.response.to.be.json;",
+									"",
+									"    // Obtém o retorno da resposta",
+									"    var responseBody = pm.response.text();",
+									"",
+									"    // Verifica se o retorno não é nulo",
+									"    pm.expect(responseBody).to.not.be.null;",
+									"",
+									"    // Verifica se o retorno não é uma string vazia",
+									"    pm.expect(responseBody.trim()).to.not.equal(\"\");",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"pistol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/register",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "login-sucessful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Sucessful POST\", function (){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validating present of fields in response body\", function () {\r",
+									"    var responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody).to.have.property(\"token\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"cityslicka\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/login",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-unsucessful",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status POST id 400\", function(){\r",
+									"    pm.response.to.be.status(400)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"check if the user not found\", function(){\r",
+									"    // Verifica se a resposta é um objeto JSON\r",
+									"    pm.response.to.be.json;\r",
+									"\r",
+									"    // Verifica se a chave \"error\" existe na resposta\r",
+									"    pm.expect(pm.response.json()).to.have.property('error');\r",
+									"\r",
+									"    // Verifica se o valor da chave \"error\" é \"user not found\"\r",
+									"    pm.expect(pm.response.json().error).to.equal('user not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"beve.holt@reqres.in\",\n    \"password\": \"cityslicka\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{REQRES-API}}/api/login",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delayed-response",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{REQRES-API}}/api/users?delay=3",
+							"host": [
+								"{{REQRES-API}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "delay",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
