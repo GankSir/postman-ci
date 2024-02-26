@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -26,7 +26,7 @@ jobs:
         run: newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
 
       - name: Arquivar resultados
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: test-results
           path: ./results
