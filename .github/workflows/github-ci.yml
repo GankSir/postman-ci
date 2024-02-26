@@ -11,16 +11,16 @@ jobs:
 
     steps:
     - name: Checkout do código
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Instalar Node.js
+    - name: Usar Node.js 20
       uses: actions/setup-node@v3
       with:
-        node-version: '20' # escolha a versão desejada do Node.js
+        node-version: '20'
 
     - name: Instalar dependências
       run: npm install newman
 
-    - name: Executar testes com Postman
+    - name: Executar testes com Postma
       run: |
         newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
