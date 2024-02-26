@@ -1,39 +1,26 @@
-name: Req Res
+name: Testes com Postman
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
-        with:
-          ref: main
+    - name: Checkout do código
+      uses: actions/checkout@v2
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+    - name: Instalar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20' # escolha a versão desejada do Node.js
 
-      - name: Step 1 Check version Newman and Node
-        run: |
-          newman --version
-          node --version
-          
-      - name: Step 2 Install Newman-Reporter-Htmlextra
-        run: npm install -g newman-reporter-htmlextra
-        
-      - name: Step 3 Execute collection
-        run: newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
-   
-      - name: Step 4 Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-            name: report
-            path: ./results/Report.html
+    - name: Instalar dependências
+      run: npm install newman
+
+    - name: Executar testes com Postman
+      run: |
+        npx newman run caminho/para/sua/colecao.json
