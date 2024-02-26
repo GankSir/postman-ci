@@ -23,4 +23,4 @@ jobs:
 
     - name: Executar testes com Postman
       run: |
-        npx newman run caminho/para/sua/colecao.json
+        newman run ./reqRes-api.json -e ./reqRes.env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
