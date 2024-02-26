@@ -17,17 +17,20 @@ on:
 jobs:
   # Este fluxo de trabalho contém um único job chamado "build"
   build:
-    # O tipo de runner que o job executará
+    # Especifica a versão do Node.js para este job
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -e {0}
+    container:
+      image: node:20
 
     # Etapas representam uma sequência de tarefas que serão executadas como parte do job
     steps:
       # Verifica o seu repositório em $GITHUB_WORKSPACE, para que seu job possa acessá-lo
       - name: Checkout do código
         uses: actions/checkout@v3
-        with:
-          ref: main
-      
+
       # Executa um conjunto de comandos usando o shell do runner
       - name: Verificar versão do Newman e Node
         run: |
