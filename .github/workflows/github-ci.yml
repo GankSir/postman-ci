@@ -39,7 +39,7 @@ jobs:
           
       # Executa um único comando usando o shell do runner      
       - name: Instalar Newman-Reporter-Htmlextra
-        run: sudo npm install -g newman-reporter-htmlextra
+        run: npm install -g newman-reporter-htmlextra
       
       # Executa um conjunto de comandos usando o shell do runner
       - name: Executar coleção
