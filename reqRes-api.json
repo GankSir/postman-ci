@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "9e27c916-3cc9-4888-9b99-8beab7d2d42f",
-		"name": "ReqRes API",
+		"name": "ReqRes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -36,20 +36,55 @@
 									"});",
 									"//Este teste verifica se os campos \"name\", \"job\", \"id\" e \"createdAt\" estão presentes no corpo da resposta. Se algum deles estiver faltando, o teste falhará.",
 									"",
-									"pm.test(\"Validating response body\", function () {",
-									"    var expectedBody = {",
-									"        \"name\": \"Bruno Teles\",",
-									"        \"job\": \"QA\"",
-									"    };",
+									"pm.test(\"Validates that the response has 'name' and 'job' equal to the one sent\", function () {",
+									"    // Obtém o body da resposta",
+									"    const responseBody = pm.response.json();",
 									"",
-									"    var responseBody = pm.response.json();",
+									"    // Define os valores esperados das variáveis",
+									"    const expectedName = pm.variables.get(\"name\");",
+									"    const expectedJob = pm.variables.get(\"job\");",
 									"",
-									"    pm.expect(responseBody).to.include(expectedBody);",
+									"    // Verifica se o body é um objeto",
+									"    pm.expect(responseBody).to.be.an('object');",
+									"",
+									"    // Verifica se o objeto possui as propriedades 'name' e 'job'",
+									"    pm.expect(responseBody).to.have.property(\"name\");",
+									"    pm.expect(responseBody).to.have.property(\"job\");",
+									"",
+									"    // Verifica se os valores das propriedades 'name' e 'job' são iguais aos valores esperados",
+									"    pm.expect(responseBody.name).to.eql(expectedName);",
+									"    pm.expect(responseBody.job).to.eql(expectedJob);",
 									"});",
 									"//Este teste verifica se o corpo da resposta contém apenas os campos \"name\" e \"job\" com os valores especificados. Certifique-se de ajustar os valores esperados conforme necessário para corresponder à resposta real que você espera receber.",
 									"",
 									"",
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateRandomName() {",
+									"    const names = [\"Alice\", \"Bob\", \"Charlie\", \"David\", \"Emma\", \"Frank\", \"Grace\", \"Hannah\", \"Isaac\", \"Julia\"];",
+									"    return names[Math.floor(Math.random() * names.length)];",
+									"}",
+									"",
+									"// Função para gerar um cargo aleatório",
+									"function generateRandomJob() {",
+									"    const jobs = [\"Developer\", \"QA\", \"Designer\", \"Project Manager\", \"Data Analyst\", \"Software Engineer\", \"UX/UI Designer\", \"System Administrator\"];",
+									"    return jobs[Math.floor(Math.random() * jobs.length)];",
+									"}",
+									"",
+									"// Gerar valores aleatórios para name e job",
+									"const randomName = generateRandomName();",
+									"const randomJob = generateRandomJob();",
+									"",
+									"// Incluir os valores aleatórios nas variáveis do ambiente",
+									"pm.environment.set(\"name\", randomName);",
+									"pm.environment.set(\"job\", randomJob);"
 								],
 								"type": "text/javascript"
 							}
@@ -60,7 +95,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Bruno Teles\",\n    \"job\": \"QA\"\n}",
+							"raw": "{\n    \"name\": \"{{name}}\",\n    \"job\": \"{{job}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -805,6 +840,57 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"function generateRandomName() {",
+					"    const names = [\"Alice\", \"Bob\", \"Charlie\", \"David\", \"Emma\", \"Frank\", \"Grace\", \"Hannah\", \"Isaac\", \"Julia\"];",
+					"    return names[Math.floor(Math.random() * names.length)];",
+					"}",
+					"",
+					"// Função para gerar um cargo aleatório",
+					"function generateRandomJob() {",
+					"    const jobs = [\"Developer\", \"QA\", \"Designer\", \"Project Manager\", \"Data Analyst\", \"Software Engineer\", \"UX/UI Designer\", \"System Administrator\"];",
+					"    return jobs[Math.floor(Math.random() * jobs.length)];",
+					"}",
+					"",
+					"// Gerar valores aleatórios para name e job",
+					"const randomName = generateRandomName();",
+					"const randomJob = generateRandomJob();",
+					"",
+					"// Incluir os valores aleatórios nas variáveis do ambiente",
+					"pm.environment.set(\"name\", randomName);",
+					"pm.environment.set(\"job\", randomJob);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "REQRES-API",
+			"value": "https://reqres.in"
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "job",
+			"value": ""
 		}
 	]
 }
